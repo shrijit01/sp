@@ -1,10 +1,17 @@
 import { useState } from "react";
-import { FaInbox, FaCalendarAlt, FaThLarge, FaLayerGroup } from "react-icons/fa";
+import {
+  FaInbox,
+  FaCalendarAlt,
+  FaThLarge,
+  FaLayerGroup,
+  FaHome,
+} from "react-icons/fa";
 
 export default function TrelloLikeDashboard() {
-  const [activeTabs, setActiveTabs] = useState(["Inbox"]);
+  const [activeTabs, setActiveTabs] = useState(["Home"]);
 
   const tabs = [
+    { name: "Home", icon: <FaHome /> },
     { name: "Inbox", icon: <FaInbox /> },
     { name: "Planner", icon: <FaCalendarAlt /> },
     { name: "Board", icon: <FaThLarge /> },
@@ -13,7 +20,11 @@ export default function TrelloLikeDashboard() {
 
   const cards = {
     Inbox: [
-      { id: 1, title: "Capture Email", desc: "Tasks captured from email & Slack" },
+      {
+        id: 1,
+        title: "Capture Email",
+        desc: "Tasks captured from email & Slack",
+      },
       { id: 2, title: "Follow Up", desc: "Client follow-up pending" },
     ],
     Planner: [
@@ -32,12 +43,13 @@ export default function TrelloLikeDashboard() {
 
   const handleTabClick = (name, e) => {
     if (e.ctrlKey || e.metaKey) {
-      setActiveTabs((prev) =>{
-        if(prev.includes(name)){
-            return prev.length > 1 ? prev.filter((t)=> t !== name) : prev;
+      setActiveTabs(
+        (prev) => {
+          if (prev.includes(name)) {
+            return prev.length > 1 ? prev.filter((t) => t !== name) : prev;
+          }
+          return [...prev, name];
         }
-        return [...prev, name]
-      }
         // prev.includes(name) ? prev.filter((t) => t !== name) :
       );
     } else {
@@ -67,20 +79,28 @@ export default function TrelloLikeDashboard() {
         {activeTabs.map((tab) => (
           <div
             key={tab}
-            className={`${getColumnWidth(activeTabs.length)} bg-white rounded-lg shadow p-4 flex flex-col`}
+            className={`${getColumnWidth(
+              activeTabs.length
+            )} bg-white rounded-lg shadow p-4 flex flex-col`}
           >
             <h2 className="text-lg font-semibold text-blue-600 mb-3">{tab}</h2>
-            <div className="space-y-3">
-              {cards[tab].map((card) => (
-                <div
-                  key={card.id}
-                  className="bg-blue-50 p-3 rounded-md shadow-sm border hover:shadow-md transition"
-                >
-                  <h3 className="font-medium">{card.title}</h3>
-                  <p className="text-sm text-gray-600">{card.desc}</p>
-                </div>
-              ))}
-            </div>
+            {tab === "Home" ? (
+              <div className="text-gray-500 text-center mt-4">
+                🏠 Welcome to your Dashboard Home!
+              </div>
+            ) : (
+              <div className="space-y-3">
+                {cards[tab].map((card) => (
+                  <div
+                    key={card.id}
+                    className="bg-blue-50 p-3 rounded-md shadow-sm border hover:shadow-md transition"
+                  >
+                    <h3 className="font-medium">{card.title}</h3>
+                    <p className="text-sm text-gray-600">{card.desc}</p>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         ))}
       </div>
@@ -92,7 +112,11 @@ export default function TrelloLikeDashboard() {
             key={item.name}
             onClick={(e) => handleTabClick(item.name, e)}
             className={`flex items-center space-x-2 px-3 py-2 rounded-lg transition-all duration-1000 
-              ${activeTabs.includes(item.name) ? "bg-blue-50 text-blue-600 shadow-inner" : "text-gray-700 hover:bg-gray-100"}`}
+              ${
+                activeTabs.includes(item.name)
+                  ? "bg-blue-50 text-blue-600 shadow-inner"
+                  : "text-gray-700 hover:bg-gray-100"
+              }`}
           >
             {item.icon}
             <span className="text-sm font-medium">{item.name}</span>
