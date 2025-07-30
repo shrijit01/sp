@@ -8,6 +8,7 @@ export default function Landing() {
   const [activeForm, setActiveForm] = useState(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
+  const [data, setData] = useState('')
 
   // Apply/remove dark class to root element
   useEffect(() => {
@@ -17,12 +18,15 @@ export default function Landing() {
     } else {
       html.classList.remove("dark");
     }
+      fetch("http://localhost:3000/")
+      .then(res => res.json())
+      .then(data => setData(data.message));
   }, [darkMode]);
 
-  const handleNavClick = (formType = null) => {
+  function handleNavClick(formType = null) {
     setActiveForm(formType);
     setMenuOpen(false);
-  };
+  }
 
   return (
     <div className="min-h-screen bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-100 transition-colors duration-300">
@@ -31,7 +35,10 @@ export default function Landing() {
         <div className="flex items-center justify-between px-8 md:px-20 py-4">
           {/* Logo */}
           <Link to="/" onClick={() => handleNavClick(null)}>
-            <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">TaskPro</div>
+            <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">
+              {/* <img src="../One.png" alt="" /> */}
+              {data}
+            </div>
           </Link>
 
           {/* Desktop Navigation */}

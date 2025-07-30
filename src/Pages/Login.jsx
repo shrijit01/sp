@@ -1,11 +1,29 @@
-import { useState } from 'react';
+import { useState } from "react";
+import {  toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function Login({ onSwitch }) {
-  const [form, setForm] = useState({ username: '', password: '' });
+  const [form, setForm] = useState({ username: "", password: "" });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Logging in:', form);
+    try {
+      const res = await fetch("http://localhost:3000/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+      const data = await res.json();
+      console.log(data)
+      if (res.ok) {
+        toast.success(data.message);
+        localStorage.setItem("token", data.token);
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error("⚠️ Server error, try again later.");
+    }
   };
 
   return (
@@ -40,7 +58,7 @@ function Login({ onSwitch }) {
         </button>
 
         <p className="text-sm text-center text-gray-600 dark:text-gray-300">
-          Don’t have an account?{' '}
+          Don’t have an account?{" "}
           <span
             onClick={onSwitch}
             className="text-[#ff9700] cursor-pointer hover:underline"
