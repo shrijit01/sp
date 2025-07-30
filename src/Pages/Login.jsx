@@ -1,9 +1,11 @@
 import { useState } from "react";
 import {  toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 
 function Login({ onSwitch }) {
   const [form, setForm] = useState({ username: "", password: "" });
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -18,6 +20,7 @@ function Login({ onSwitch }) {
       if (res.ok) {
         toast.success(data.message);
         localStorage.setItem("token", data.token);
+        navigate('/dashboard')
       } else {
         toast.error(data.message);
       }
