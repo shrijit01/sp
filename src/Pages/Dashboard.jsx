@@ -91,7 +91,7 @@ export default function TrelloLikeDashboard() {
           <button
             key={item.name}
             onClick={(e) => handleTabClick(item.name, e)}
-            className={`flex items-center space-x-2 px-3 py-2 rounded-lg transition-all duration-300 
+            className={`flex items-center space-x-2 px-3 py-2 rounded-lg transition-all duration-1000 
               ${activeTabs.includes(item.name) ? "bg-blue-50 text-blue-600 shadow-inner" : "text-gray-700 hover:bg-gray-100"}`}
           >
             {item.icon}
